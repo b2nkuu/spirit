@@ -15,7 +15,7 @@ Modeled after the Claude Code `feature-dev` plugin, adapted to:
 
 ## When to use
 
-- After `/solo:start <n>` created a `feature/<n>-<slug>` (or similar) branch.
+- After `/solo:start <n>` created a `chore/<n>-<slug>` (or similar) branch.
 - When picking up an existing branch in a fresh session and you want a structured restart.
 - For features that touch multiple files or need architectural decisions. For one-line fixes, just edit.
 
@@ -28,7 +28,7 @@ Modeled after the Claude Code `feature-dev` plugin, adapted to:
    - Else `gh repo view --json nameWithOwner -q .nameWithOwner`.
    - Else stop: `❌ Cannot resolve repo — set .solo/config.yml repo: or run inside a gh-mapped repo.`
 2. Resolve current branch via `git branch --show-current`. Stop if detached HEAD.
-3. Parse the issue number from the branch name using `.solo/config.yml` `branch.pattern` (default `{type}/{issue}-{slug}`). Translate tokens to regex (`{type}` → `[a-z]+`, `{issue}` → `(\d+)`, `{slug}` → `.+`); do not hardcode `feature/`.
+3. Parse the issue number from the branch name using `.solo/config.yml` `branch.pattern` (default `{prefix}/{issue}-{slug}`). Same rule as solo's **Appendix: branch.pattern** in `commands/start.md`, copied here because an installed skill cannot read solo's files: escape the literal text, then translate `{prefix}` → `(?:feat|fix|chore|spike)`, `{type}` → `(?:feature|bug|task|idea|research)`, `{issue}` → `(\d+)`, `{slug}` → `.+`, and anchor with `^…$`. The `(\d+)` capture is the issue number. Do not hardcode `feature/`.
 4. Fetch the issue:
    ```bash
    gh issue view <n> --repo <owner/repo> --json number,title,body,labels,state,milestone
