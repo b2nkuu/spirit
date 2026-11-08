@@ -219,9 +219,10 @@ Print one block:
 Next:
   /solo:test <n>   — walk the Test Plan
   /solo:done <n>   — close + open PR (Summary will include the Approach call-out from Notes)
+  then             — wait for review, answer every finding (triage with /spirit:inspect) — never merge
 ```
 
-Step 7 is read-only on the issue body — it does not write the summary to GitHub (the `[approach]` line was already persisted in Step 5). The user advances state via `/solo:test` then `/solo:done`.
+Step 7 is read-only on the issue body — it does not write the summary to GitHub (the `[approach]` line was already persisted in Step 5). The user advances state via `/solo:test` then `/solo:done`. Once the PR is open, every review finding gets an answer: fix and push, or write the reason for skipping it in the PR. Triage each finding through the `/spirit:inspect` lens — review is input, not a gate. Merging stays with the user. When `.solo/config.yml` sets `review.check`, `/solo:done` waits for the review itself.
 
 ## Non-goals
 
